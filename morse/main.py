@@ -1,6 +1,16 @@
 import random
 
 
+def counter(func):
+    def inner(*a, **kw):
+        inner.count += 1
+        return func(*a, **kw)
+
+    inner.count = 0
+    return inner
+
+
+@counter
 def input_data():
 
     with open("RUS.txt", "r", encoding="utf-8") as file:
@@ -9,6 +19,7 @@ def input_data():
     return words
 
 
+@counter
 def morse_encode(word, morse_code):
 
     """
@@ -24,6 +35,7 @@ def morse_encode(word, morse_code):
     return " ".join(word_encoded)
 
 
+@counter
 def get_word(words):
 
     """
@@ -34,6 +46,7 @@ def get_word(words):
     return random.choice(words)
 
 
+@counter
 def print_statistics(answers):
 
     """
@@ -47,6 +60,7 @@ def print_statistics(answers):
     print(f"Всего задачек: {answers_total}\nРешено верно: {answers_correct}\nРешено неверно: {answers_incorrect}")
 
 
+@counter
 def main():
 
     morse_code = {
@@ -84,6 +98,15 @@ def main():
 
     print_statistics(answers)
 
+    """счетчик реалезованн через декоратор, другого способа не знаю, думаю не самый лучший способ,
+    так как если в программе содержится большое количество функций, этот способ будет 
+    крайне неудобен"""
+
+    print(f"\nФункция input_data отработала {input_data.count} раз")
+    print(f"Функция morse_encode отработала {morse_encode.count} раз")
+    print(f"Функция get_word отработала {get_word.count} раз")
+    print(f"Функция print_statistics отработала {print_statistics.count} раз")
+    print(f"Функция main отработала {main.count} раз")
 
 if __name__ == '__main__':
     main()
