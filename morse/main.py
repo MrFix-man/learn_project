@@ -3,11 +3,10 @@ import random
 
 def input_data():
 
-    with open("RUS.txt", "r") as file:
-        words = random.sample(list(file), 200)
+    with open("RUS.txt", "r", encoding="utf-8") as file:
+        words = list(file)
 
     return words
-
 
 
 def morse_encode(word, morse_code):
@@ -66,12 +65,13 @@ def main():
     input("Нажмите enter")
 
     words = input_data()
+    count_questions = 0
 
-    for i in range(len(words)):
+    while True:
         word = get_word(words)
         word_morse = morse_encode(word, morse_code)
-
-        user_input = input(f"Слово - {i+1} {word_morse}\n")
+        count_questions += 1
+        user_input = input(f"Слово - {count_questions} {word_morse}\n")
 
         if user_input.lower() == "конец":
             break
@@ -85,4 +85,5 @@ def main():
     print_statistics(answers)
 
 
-main()
+if __name__ == '__main__':
+    main()
