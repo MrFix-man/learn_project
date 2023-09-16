@@ -1,27 +1,20 @@
 import random
 
 
-def counter(func):
-    def inner(*a, **kw):
-        inner.count += 1
-        return func(*a, **kw)
-
-    inner.count = 0
-    return inner
+class Counter:
+    go_def = 0
 
 
-@counter
 def input_data():
-
+    Counter.go_def += 1
     with open("RUS.txt", "r", encoding="utf-8") as file:
         words = list(file)
 
     return words
 
 
-@counter
 def morse_encode(word, morse_code):
-
+    Counter.go_def += 1
     """
     переводит английские слов в последовательность точек и тире
     :param morse_code:
@@ -35,9 +28,8 @@ def morse_encode(word, morse_code):
     return " ".join(word_encoded)
 
 
-@counter
 def get_word(words):
-
+    Counter.go_def += 1
     """
     получает случайное слово из списка
     :return: строка слова
@@ -46,9 +38,8 @@ def get_word(words):
     return random.choice(words)
 
 
-@counter
 def print_statistics(answers):
-
+    Counter.go_def += 1
     """
     на основе списка answers выводит статистику
     :param answers: список верности ответов
@@ -60,12 +51,11 @@ def print_statistics(answers):
     print(f"Всего задачек: {answers_total}\nРешено верно: {answers_correct}\nРешено неверно: {answers_incorrect}")
 
 
-@counter
 def main():
-
+    Counter.go_def += 1
     morse_code = {
         "0": "-----", "1": ".----", "2": "..---", "3": "...--", "4": "....-", "5": ".....", "6": "-....",
-        "7": "--...", "8": "---..", "9": "----.", "а": ".-", "б": "-...", "в": ".--", "г": "--.",
+        "7": "--...", "8": "---..", "9": "----.", "а": ".-", "б": "-...", "в": ".--.", "г": "--.",
         "д": "-..", "е": ".", "ж": "...-", "з": "--..", "и": "..", "й": ".---", "к": "-.-", "л": ".-..",
         "м": "--", "н": "-.", "о": "---", "п": ".--.", "р": "-.-", "с": "...", "т": "-", "у": "..-",
         "ф": "..-.", "х": "....", "ц": "-.-.", "ч": "---.", "ш": "----", "щ": "--.-", "ъ": ".--.-.",
@@ -88,25 +78,14 @@ def main():
         user_input = input(f"Слово - {count_questions} {word_morse}\n")
 
         if user_input.lower() == "конец":
-            break
+            print(f"Кол-во обращений к функциям = {Counter.go_def}")
+            exit()
         elif user_input.lower() == word.strip():
             print(f"Верно {word}\n")
             answers.append(True)
         else:
             print(f"Неверно {word}")
             answers.append(False)
-
-    print_statistics(answers)
-
-    """счетчик реалезованн через декоратор, другого способа не знаю, думаю не самый лучший способ,
-    так как если в программе содержится большое количество функций, этот способ будет 
-    крайне неудобен"""
-
-    print(f"\nФункция input_data отработала {input_data.count} раз")
-    print(f"Функция morse_encode отработала {morse_encode.count} раз")
-    print(f"Функция get_word отработала {get_word.count} раз")
-    print(f"Функция print_statistics отработала {print_statistics.count} раз")
-    print(f"Функция main отработала {main.count} раз")
 
 
 if __name__ == '__main__':
